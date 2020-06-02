@@ -1,10 +1,10 @@
 # Deploy an Azure Function using an ARM template
 
-The NwNSGGlowLogs branch contains a working version of the deployment template, tailored for a real version of a function that transmits Azure Network Watcher NSG Flow Logs to Arcsight, Splunk, LogStash or EventHub.  
+The NwNSGGlowLogs branch contains a working version of the deployment template, tailored for a real version of a function that transmits Azure Network Watcher NSG Flow Logs to Armor or EventHub.  
 
 NOTE: Native support for event hubs is not yet available, but would be the preferred method.  
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebastus%2FAzureFunctionDeployment%2FNwNSGFlowLogs%2FazureDeploy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Farledesma%2FAzureFunctionDeployment%2FArmorNwNSGFlowLogs%2FazureDeploy.json)
 
 ## Overview
 
@@ -14,7 +14,7 @@ The steps to fully implement the Azure Network Watcher NSG Flow Logs Connector a
 * Authenticate to the Azure Portal (if necessary)
 * Fill in the form with the setting values
 * Wait a few minutes for the function to be created and deployed
-* In the UI of your monitoring tool (ArcSight/LogStash/Splunk), query for the records that are being sent over.
+* In the UI of your monitoring tool (Armor), query for the records that are being sent over.
 
 ## Settings
 
@@ -39,24 +39,15 @@ The steps to fully implement the Azure Network Watcher NSG Flow Logs Connector a
    Example: ```DefaultEndpointsProtocol=https;AccountName=yyy;AccountKey=xxx;EndpointSuffix=core.windows.net```  
 * cefLogAccount               - a storage account connection string - account into which trace logs of incoming json and outgoing cef are dropped  
    Example: ```DefaultEndpointsProtocol=https;AccountName=yyy;AccountKey=xxx;EndpointSuffix=core.windows.net```  
-* outputBinding               - Points to the destination service - the service that will receive the NSG flow log data. Options are "arcsight", "splunk", "eventhub", "logstash".  
-   Example: ```arcsight```  
-* arcsightAddress             - internet address of the ArcSight server / service  
-   Example: ```192.168.1.1```  
-* arcsightPort                - TCP port to connect to on destination server / service  
-   Example: ```1514```
-* splunkAddress               - internet address of the Splunk HEC port.  
-   Example: ```http://mysplunkbox.uksouth.cloudapp.azure.com:8088/services/collector```  
-* splunkToken                 - guid security token for Splunk HEC  
-   Example: ```a77fdc21-0861-4d8b-941c-e1b4c556b4fb```
+* outputBinding               - Points to the destination service - the service that will receive the NSG flow log data. Options are "armor", "eventhub".
+   Example: ```armor```
+* armorAddress             - internet address of the Armor server / service  
+   Example: ```1d.log.armor.com```  
+* armorPort                - TCP port to connect to on destination server / service  
+   Example: ```5443```
+* armorAccountId                 - Your Account ID with Armor  
+   Example: ```1024```
 * eventHubConnection          - connection string for your event hub namespace  
    Example: ```Endpoint=sb://my.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key```
 * eventHubName                - name of your event hub within the hub namespace  
-   Example: ```insights-logs-nsgflowlogs```  
-* logstashAddress             - network address of LogStash input endpoint  
-   Example: ```http://myelasticbox.uksouth.cloudapp.azure.com/```  
-* logstashHttpUser            - userid for LogStash http input  
-   Example: ```greg```  
-* logstashHttpPwd             - password for LogStash http input  
-   Example: ```P@ssw0rd!```  
-
+   Example: ```insights-logs-nsgflowlogs```

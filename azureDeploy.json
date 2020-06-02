@@ -1,6 +1,6 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
+    "contentVersion": "0.0.0.1",
     "parameters": {
         "appName": {
             "type": "string",
@@ -47,7 +47,7 @@
         },
         "githubRepoURL": {
             "type": "string",
-            "defaultValue": "https://github.com/Microsoft/AzureNetworkWatcherNSGFlowLogsConnector.git"
+            "defaultValue": "https://github.com/arledesma/AzureNetworkWatcherNSGFlowLogsConnector.git"
         },
         "githubRepoBranch": {
             "type": "string",
@@ -63,62 +63,39 @@
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "ArcSight only: Optional storage account connection string for CEF log tracing."
+                "description": "armor only: Optional storage account connection string for CEF log tracing."
             }
         },
         "outputBinding": {
             "type": "string",
             "allowedValues": [
-                "arcsight",
-                "splunk",
                 "eventhub",
-                "logstash"
+                "Armor"
             ],
-            "defaultValue": "arcsight",
+            "defaultValue": "Armor",
             "metadata": {
                 "description": "Select the desired destination for your logs."
             }
         },
-        "arcsightAddress": {
+        "armorAddress": {
+            "type": "string",
+            "defaultValue": "1d.log.armor.com",
+            "metadata": {
+                "description": "Armor only: IP or DNS address of ingestion endpoint."
+            }
+        },
+        "armorPort": {
+            "type": "string",
+            "defaultValue": "5443",
+            "metadata": {
+                "description": "Armor only: TCP port of ingestion endpoint. Defaults to 5443."
+            }
+        },
+        "armorToken": {
             "type": "string",
             "defaultValue": "",
             "metadata": {
-                "description": "ArcSight only: IP or DNS address of ingestion endpoint."
-            }
-        },
-        "arcsightPort": {
-            "type": "string",
-            "defaultValue": "1514",
-            "metadata": {
-                "description": "ArcSight only: TCP port of ingestion endpoint. Defaults to 1514."
-            }
-        },
-        "splunkAddress": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Splunk only: IP or DNS address of HEC port."
-            }
-        },
-        "splunkToken": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Splunk only: authentication token for the HEC port."
-            }
-        },
-        "eventHubConnection": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Event hub only: Connection string for event hub namespace."
-            }
-        },
-        "eventHubName": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Event hub only: Event hub name."
+                "description": "Armor only: authentication token for the ingestion endpoint."
             }
         }
     },
@@ -219,20 +196,16 @@
                             "value": "[parameters('outputBinding')]"
                         },
                         {
-                            "name": "arcsightAddress",
-                            "value": "[parameters('arcsightAddress')]"
+                            "name": "armorAddress",
+                            "value": "[parameters('armorAddress')]"
                         },
                         {
-                            "name": "arcsightPort",
-                            "value": "[parameters('arcsightPort')]"
+                            "name": "armorPort",
+                            "value": "[parameters('armorPort')]"
                         },
                         {
-                            "name": "splunkAddress",
-                            "value": "[parameters('splunkAddress')]"
-                        },
-                        {
-                            "name": "splunkToken",
-                            "value": "[parameters('splunkToken')]"
+                            "name": "armorToken",
+                            "value": "[parameters('armorToken')]"
                         },
                         {
                             "name": "eventHubConnection",
@@ -241,10 +214,6 @@
                         {
                             "name": "eventHubName",
                             "value": "[parameters('eventHubName')]"
-                        },
-                        {
-                            "name": "cefLogAccount",
-                            "value": "[parameters('cefLogAccount')]"
                         },
                         {
                             "name": "logIncomingJSON",
